@@ -30,6 +30,25 @@
 
 
     </el-col>
+
+    <!-- 对另一半的处理 -->
+     <el-col :span="16" style="margin-top: 20px;">
+        <div class="number">
+            <el-card
+        :body-style="{display:'flex',padding:0 }"
+        v-for="item in countData"
+        :key="item.name">
+         <component :is="item.icon"
+         class="icons"
+         :style="{background:item.color}"></component>   
+            
+        <div class="detail">
+            <p class="num">￥{{ item.value }}</p>
+            <p class="txt">￥{{ item.name }}</p>
+        </div>
+        </el-card>
+        </div>
+     </el-col>
   </el-row>
 </template>
 
@@ -58,10 +77,8 @@ const getTableData = async() =>{
 //去拿到countData
 const getCountData = async() =>{
     const data = await proxy.$api.getCountData();
-    console.log("显示countData的值",data);
-    
-    /*为啥直接是data呢，不是data.tableData呢，是因为在request.js中
-    进行了 const {code:code,tableData:data} = res.data; 已经解构了*/
+    /*为啥直接是data呢，不是data.Data呢，是因为在request.js中
+    进行了 const {code:code,Data:data} = res.data; 已经解构了*/
     countData.value = data;  
 }
 onMounted(()=>{
@@ -105,11 +122,43 @@ onMounted(()=>{
         span{
         color: #666;
         margin-left: 60px;
+        }
     }
+}
+.user-table{
+        margin-top: 10px;
     }
-    
-    .user-table{
-        margin-top: 20px;
+.number{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    .el-card{
+        width: 32%;
+        margin-top: 8px;
     }
+    .icons{
+        width: 80px;
+        height: 80px;
+        font-size: 30px;
+        text-align: center;
+        line-height: 60px;
+        color: #fff;
+        margin:auto 10px;
+    }
+    .detail{
+       // display: flex;
+       // flex-direction: column;
+       // justify-content: center;
+       .num{
+           font-size: 24px;
+           // margin-bottom: 10px;
+       }
+       .txt{
+           font-size: 15px;
+        //    text-align: center;
+           color: #080808;
+       }
+   }
+
 }
 </style>

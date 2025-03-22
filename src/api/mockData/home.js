@@ -37,7 +37,7 @@ export default {
                   name: '本月支付账单',
                   value:333,
                   icon:"GoodsFilled",
-                  color:"#2ec7c9"
+                  color:"#ce5777"
                 },              {
                   name: '本月收藏账单',
                   value:1234,
@@ -48,7 +48,19 @@ export default {
                   name: '本月未支付账单',
                   value:1234,
                   icon:"GoodsFilled",
-                  color:"#2ec7c9"
+                  color:"#c93756"
+                },
+                {
+                  name: '其他',
+                  value:111,
+                  icon:"SuccessFilled",
+                  color:"#fbc82f"
+                },
+                {
+                  name: '其他',
+                  value:999,
+                  icon:"GoodsFilled",
+                  color:"#fbc82f"
                 },
           ]
       }
