@@ -54,13 +54,15 @@
 
 
 <script setup>
-import { ref,onMounted,getCurrentInstance } from "vue";
+import { ref,reactive,onMounted,getCurrentInstance } from "vue";
 import userImage from '../assets/images/OIP.png' // 直接导入图片
+// import { log } from "echarts/types/src/util/log.js";
 
 const {proxy} = getCurrentInstance();
 
 const tableData = ref([])
 const countData = ref([])
+const chartData = ref([])
 const tableLable = ref({
     name: '课程',
     todayBuy:"本月购买",
@@ -81,9 +83,16 @@ const getCountData = async() =>{
     进行了 const {code:code,Data:data} = res.data; 已经解构了*/
     countData.value = data;  
 }
+const getChartData = async() =>{
+    const data = await proxy.$api.getChartData();
+    console.log("ChartData",data);
+    
+    // countData.value = data;  
+}
 onMounted(()=>{
     getTableData();
     getCountData();
+    getChartData();
 })
 </script>
 
