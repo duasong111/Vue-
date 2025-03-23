@@ -1,18 +1,17 @@
-import { defineStore } from "pinia"
-import {ref} from 'vue'
+import { defineStore } from 'pinia'
+import { ref } from 'vue'
 
-function initState(){
-    return {
-        isCollapse:true,
-    }
+function initState() {
+  return {
+    isCollapse: true,
+  }
 }
 export const useAllDataStore = defineStore('alldata', () => {
+  const state = ref(initState())
 
-    const state = ref(initState());
+  return {
+    state,
+  }
 
-    return{
-        state,
-    }
-  
-    return { count, doubleCount, increment }
-  })
+  return { count, doubleCount, increment }
+})
