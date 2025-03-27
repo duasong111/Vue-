@@ -34,6 +34,12 @@
       <el-card class="top-echart">
         <div ref="echart" style="height: 280px;"></div>
       </el-card>
+
+      <div class="graph">
+        <el-card>
+          <div ref="userEchart" style="height: 240px;"></div>
+        </el-card>
+      </div>
     </el-col>
   </el-row>
 </template>
@@ -77,8 +83,8 @@ const getCountData = async () => {
 };
 
 const getChartData = async () => {
-  const { orderData } = await proxy.$api.getChartData();
-  console.log('ChartData', orderData);
+  const { orderData, videoDate, userDate } = await proxy.$api.getChartData();
+  console.log('videoDate', videoDate);
 
   // 更新 chartOptions
   chartOptions.value.xAxis.data = orderData.date;
@@ -96,6 +102,40 @@ const getChartData = async () => {
   } else {
     console.error('ECharts DOM 未找到');
   }
+
+  //对下面的表格去进行渲染
+  chartOptions.value.xAxis.data = userDate.map(item => item.date);
+  chartOptions.value.series = [
+    {
+      name: "新增用户",
+      data: userDate.map(item => item.new),
+      type: 'bar',
+      barWidth: '20%', // 设置柱子宽度
+      itemStyle: {
+        color: '#5470c6' // 自定义颜色
+      }
+    },
+    {
+      name: "活跃用户",
+      data: userDate.map(item => item.active),
+      type: 'bar',
+      barWidth: '20%',
+      itemStyle: {
+        color: '#91cc75' // 不同颜色区分
+      }
+    }
+  ];
+
+  // 初始化 ECharts
+  const userChartDom = proxy.$refs['userEchart'];
+  if (userChartDom) {
+    const userEchart = echarts.init(userChartDom);
+    userEchart.setOption(chartOptions.value);
+  } else {
+    console.error('userEchart DOM 未找到');
+  }
+  //饼状图显示
+
 };
 
 onMounted(() => {
@@ -189,6 +229,16 @@ onMounted(() => {
       font-size: 15px;
       //    text-align: center;
       color: #080808;
+    }
+  }
+
+  .graph {
+    display: flex;
+    justify-content: space-between;
+
+    .el-card {
+      width: 48%;
+      height: 260px;
     }
   }
 
