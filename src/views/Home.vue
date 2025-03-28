@@ -217,17 +217,18 @@ onMounted(() => {
 
   .detail {
 
-    // display: flex;
-    // flex-direction: column;
-    // justify-content: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
     .num {
       font-size: 24px;
-      // margin-bottom: 10px;
+      margin-bottom: 10px;
     }
 
     .txt {
       font-size: 15px;
-      //    text-align: center;
+      text-align: center;
       color: #080808;
     }
   }

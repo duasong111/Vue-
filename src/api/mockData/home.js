@@ -8,7 +8,7 @@ export default {
   getTableData: () => {
     return {
       code: 200,
-      Data: [
+      data: [
         {
           name: "OPPO",
           todayBuy: 100,
@@ -33,7 +33,7 @@ export default {
   getCountData: () => {
     return {
       code: 200,
-      Data: [
+      data: [
         {
           name: "支付账单",
           value: 1234,
@@ -76,7 +76,7 @@ export default {
   getChartData: () => {
     return {
       code: 200,
-      Data: {
+      data: {
         orderData: {
           date: [
             "2025-3-10",
