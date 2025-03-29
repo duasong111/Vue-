@@ -136,7 +136,7 @@ const getChartData = async () => {
   }
   //饼状图显示
 
-};
+}
 
 onMounted(() => {
   getTableData();

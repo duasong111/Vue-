@@ -25,11 +25,28 @@ export default {
     });
   },
   //在User页面中展示
-  getUserData() {
+  getUserData(data) {
     return request({
       url: "/home/getUserData",
       method: "get",
       mock: false,
+      data,
+    });
+  },
+  //删除用户数据
+  deleteUser(data) {
+    return request({
+      url: "/user/deleteUser",
+      method: "get",
+      data,
+    });
+  },
+  //添加用户数据
+  addUser(data) {
+    return request({
+      url: "/user/addUser",
+      method: "post",
+      data,
     });
   },
 };
