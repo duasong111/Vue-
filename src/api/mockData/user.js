@@ -92,4 +92,25 @@ export default {
       },
     };
   },
+  //实现编辑功能
+  updateUser: (config) => {
+    const { id, name, addr, age, birth, sex } = JSON.parse(config.body);
+    const sex_num = parseInt(sex);
+    List.some((u) => {
+      if (u.id === id) {
+        u.name = name;
+        u.addr = addr;
+        u.age = age;
+        u.birth = birth;
+        u.sex = sex;
+        return true;
+      }
+    });
+    return {
+      code: 200,
+      data: {
+        message: "编辑成功",
+      },
+    };
+  },
 };

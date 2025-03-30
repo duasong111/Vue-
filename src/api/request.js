@@ -32,20 +32,6 @@ service.interceptors.response.use((res) => {
     return Promise.reject(res.data.msg || NETWORK_ERROR);
   }
 });
-// 添加响应拦截器
-// service.interceptors.response.use((res) => {
-//   const { code: code, Data: data } = res.data;
-//   console.log("响应拦截器", res.data);
-
-//   if (code === 200) {
-//     return data;
-//   } else {
-//     const NETWORK_ERROR = "网络错误.....";
-//     ElMessage.error("无法正常显示该图表" || NETWORK_ERROR);
-//     return Promise.reject("无法正常显示该图表" || NETWORK_ERROR);
-//   }
-// });
-
 function request(options) {
   options.method = options.method || "get";
   //关于get请求参数的调整

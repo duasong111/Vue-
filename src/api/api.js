@@ -49,4 +49,12 @@ export default {
       data,
     });
   },
+  //编辑用户数据
+  editUser(data) {
+    return request({
+      url: "/user/updateUser",
+      method: "post",
+      data,
+    });
+  },
 };

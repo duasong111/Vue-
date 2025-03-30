@@ -16,7 +16,7 @@
         :prop="item.prop" :label="item.label" />
       <el-table-column fixed="right" label="Operations" min-width="140">
         <template #="scope">
-          <el-button type="success" size="small" @click="handleClick()">编辑</el-button>
+          <el-button type="success" size="small" @click="handleEdit(scope.row)">编辑</el-button>
           <el-button type="danger" size="small" @click="handleDelete(scope.row)">删除</el-button>
         </template>
       </el-table-column>
@@ -71,10 +71,8 @@
 
 
 <script setup>
-import { time } from 'echarts';
-
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { ref, onMounted, getCurrentInstance, reactive } from 'vue';
+import { ref, onMounted, getCurrentInstance, reactive, nextTick } from 'vue';
 
 const { proxy } = getCurrentInstance();
 const tableData = ref([]);
@@ -83,7 +81,7 @@ const getUserData = async () => {
   //采用map的方式去将sexLabel去进行展示出来
   tableData.value = data.list.map(item => ({
     ...item,
-    sexLabel: item.sex === 1 ? '男' : '女'
+    sexLabel: item.sex === '1' ? '男' : '女'
   }))// 根据 Mock 数据结构调整
   config.total = data.count
 };
@@ -181,10 +179,17 @@ const onSubmit = () => {
       formUser.birth = /^\d{4}-\d{2}-\d{2}$/.test(formUser.birth) ? formUser.birth : timeFormat(formUser.birth)
       if (action.value === 'add') {
         res = await proxy.$api.addUser(formUser)
+      } else {
+        res = await proxy.$api.editUser(formUser)
       }
       if (res) {
         dialogVisible.value = false
         proxy.$refs['userForm'].resetFields()
+        ElMessage({
+          showClose: true,
+          message: '添加成功',
+          type: 'success'
+        })
         getUserData()
       }
     } else {
@@ -196,14 +201,18 @@ const onSubmit = () => {
     }
   })
 }
+//对数据的编辑
+const handleEdit = (val) => {
+  action.value = 'edit'
+  dialogVisible.value = true
+  nextTick(() => {
+    Object.assign(formUser, { ...val, sex: '' + val.sex })
+  })
+
+}
 onMounted(() => {
   getUserData();
 });
-
-const handleClick = () => {
-
-  console.log('click');
-};
 </script>
 
 <style lang="scss" scoped>
