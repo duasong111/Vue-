@@ -29,6 +29,12 @@ const routes = [
       },
     ],
   },
+  {
+    //和主页面是同级的，不再是子页面了
+    path: "/login",
+    name: "login",
+    component: () => import("@/views/Login.vue"),
+  },
 ];
 const router = createRouter({
   history: createWebHashHistory(),
