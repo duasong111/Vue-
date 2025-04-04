@@ -78,7 +78,7 @@ export const useAllDataStore = defineStore("alldata", () => {
     state.value.routerList = [];
     let routers = router.getRoutes();
     routers.forEach((item) => {
-      if (item.name == "main" || item.name == "login") {
+      if (item.name == "main" || item.name == "login" || item.name == "404") {
         return;
       } else {
         router.removeRoute(item.name);
@@ -88,6 +88,15 @@ export const useAllDataStore = defineStore("alldata", () => {
       state.value.routerList.push(router.addRoute("main", item));
     });
   }
+  //实现退出功能
+  function clean() {
+    state.value.routerList.forEach((item) => {
+      if (item) item();
+    });
+    state.value = initState();
+    //删除本地缓存
+    localStorage.removeItem("store");
+  }
 
   return {
     state,
@@ -95,5 +104,6 @@ export const useAllDataStore = defineStore("alldata", () => {
     undateTags,
     updateMenuList,
     addMenu,
+    clean,
   };
 });

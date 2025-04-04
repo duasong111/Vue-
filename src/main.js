@@ -9,6 +9,20 @@ import api from "@/api/api";
 import { createPinia } from "pinia";
 import "@/api/mock.js";
 import { useAllDataStore } from "@/stores";
+function isRoute(to) {
+  let res = router.getRoutes();
+  let resFile = res.filter((item) => item.path === to.path);
+  return resFile.length > 0;
+}
+router.beforeEach((to, from) => {
+  if (to.path !== "/login" && !store.state.token) {
+    return { name: "login" };
+  }
+  if (!isRoute(to)) {
+    return { name: "404" };
+  }
+});
+
 const pinia = createPinia();
 const app = createApp(App);
 

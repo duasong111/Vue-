@@ -17,7 +17,7 @@
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item>个人中心</el-dropdown-item>
-            <el-dropdown-item>退出</el-dropdown-item>
+            <el-dropdown-item @click="handleLoginOut">退出</el-dropdown-item>
             <el-dropdown-item>语言
 
             </el-dropdown-item>
@@ -37,12 +37,16 @@ import userImage from '../assets/images/OIP.png'
 import { useAllDataStore } from '@/stores'
 const noChildren = computed(() => list.value.filter(item => !item.children))
 const hasChildren = computed(() => list.value.filter(item => item.children))
-
+import { useRouter } from 'vue-router'
 const store = useAllDataStore()
 //去调用store函数，然后取反，实现不一样展示功能
 const handCollapse = () => { store.state.isCollapse = !store.state.isCollapse; }
-
-
+const router = useRouter()
+const handleLoginOut = () => {
+  //点击退出后先清理本地缓存，然后再去进行返回login的页面
+  store.clean()
+  router.push('/login')
+}
 </script>
 <style lange="less" scoped>
 /* .header{
