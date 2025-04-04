@@ -62,6 +62,7 @@ export default {
       };
     } else if (username === "xiaoming" && pass === "password") {
       return {
+        code: 200,
         data: {
           menuList: [
             {

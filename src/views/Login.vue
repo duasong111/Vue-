@@ -49,8 +49,10 @@ const handleLogin = async () => {
     await ruleFormRef.value.validate()
     const res = await proxy.$api.getMenu(loginForm)
     store.updateMenuList(res.menuList)
-    store.state.token = res.token
+    store.state.token = res.token;
     router.push('/home')
+    store.addMenu(router)
+
   } catch (error) {
     console.error('登录出错:', error)
   }

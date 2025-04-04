@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
 function initState() {
   return {
@@ -15,10 +15,21 @@ function initState() {
     currentMenu: null,
     menuList: [],
     token: "",
+    routerList: [],
   };
 }
 export const useAllDataStore = defineStore("alldata", () => {
   const state = ref(initState());
+
+  //进行持久化的操作
+  watch(
+    state,
+    (newObj) => {
+      if (!newObj.token) return;
+      localStorage.setItem("store", JSON.stringify(newObj));
+    },
+    { deep: true }
+  );
 
   function selectMenu(val) {
     if (val.name === "home") {
@@ -36,11 +47,53 @@ export const useAllDataStore = defineStore("alldata", () => {
   function updateMenuList(val) {
     state.value.menuList = val;
   }
+  //实现动态路由功能
+  function addMenu(router, type) {
+    if (type === "refresh") {
+      if (JSON.parse(localStorage.getItem("store"))) {
+        state.value = JSON.parse(localStorage.getItem("store"));
+        //能够实现刷新功能
+        state.value.routerList = [];
+      } else {
+        return;
+      }
+    }
+
+    const menu = state.value.menuList;
+    const module = import.meta.glob("../views/**/*.vue");
+    const routeArr = [];
+    menu.forEach((item) => {
+      if (item.children) {
+        item.children.forEach((val) => {
+          let url = `../views/${val.url}.vue`;
+          val.component = module[url];
+          routeArr.push(...item.children);
+        });
+      } else {
+        let url = `../views/${item.url}.vue`;
+        item.component = module[url];
+        routeArr.push(item);
+      }
+    });
+    state.value.routerList = [];
+    let routers = router.getRoutes();
+    routers.forEach((item) => {
+      if (item.name == "main" || item.name == "login") {
+        return;
+      } else {
+        router.removeRoute(item.name);
+      }
+    });
+    routeArr.forEach((item) => {
+      state.value.routerList.push(router.addRoute("main", item));
+    });
+  }
 
   return {
     state,
     selectMenu,
     undateTags,
     updateMenuList,
+    addMenu,
   };
 });
